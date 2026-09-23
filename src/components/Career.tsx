@@ -1,8 +1,44 @@
+import { useRef } from "react";
 import "./styles/Career.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Career = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(
+    () => {
+      const careerTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".career-section",
+          start: "top 75%",
+          end: "bottom 75%",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      careerTimeline
+        .fromTo(
+          ".career-timeline",
+          { maxHeight: "10%", opacity: 0 },
+          { maxHeight: "100%", opacity: 1, duration: 1 }
+        )
+        .fromTo(
+          ".career-info-box",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, stagger: 0.25, duration: 1 },
+          0
+        );
+    },
+    { scope: containerRef }
+  );
+
   return (
-    <div className="career-section section-container">
+    <div className="career-section section-container" ref={containerRef}>
       <div className="career-container">
         <h2>
           My career <span>&</span>

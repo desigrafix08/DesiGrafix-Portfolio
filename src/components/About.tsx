@@ -6,9 +6,11 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Designer with a curiosity for building brands, interfaces, motion, and
-          digital experiences. Always exploring new tools, new mediums, and
-          better ways to tell visual stories.
+          I am a passionate Graphic & Motion Designer dedicated to crafting
+          distinctive visual identities, dynamic motion promos, 3D visual renders,
+          and immersive digital experiences. With a foundation in Fine Arts and
+          national-level recognitions, I blend kinetic design principles, typography,
+          and storytelling to bring bold creative visions to life.
         </p>
       </div>
     </div>

@@ -1,58 +1,67 @@
+import { useRef } from "react";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Work = () => {
-  useGSAP(() => {
-  let translateX: number = 0;
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const flexRef = useRef<HTMLDivElement | null>(null);
 
-  function setTranslateX() {
-    const box = document.getElementsByClassName("work-box");
-    const rectLeft = document
-      .querySelector(".work-container")!
-      .getBoundingClientRect().left;
-    const rect = box[0].getBoundingClientRect();
-    const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-    let padding: number =
-      parseInt(window.getComputedStyle(box[0]).padding) / 2;
-    translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-  }
+  useGSAP(
+    () => {
+      if (!sectionRef.current || !flexRef.current) return;
 
-  setTranslateX();
+      const getScrollAmount = () => {
+        if (!flexRef.current) return 1800;
+        const flexWidth = flexRef.current.scrollWidth;
+        const winWidth = window.innerWidth;
+        return Math.max(0, flexWidth - winWidth + 120);
+      };
 
-  let timeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".work-section",
-      start: "top top",
-      end: `+=${translateX}`, // Use actual scroll width
-      scrub: true,
-      pin: true,
-      id: "work",
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${getScrollAmount()}`,
+          scrub: 0.8,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          id: "work-pin",
+        },
+      });
+
+      tl.to(flexRef.current, {
+        x: () => -getScrollAmount(),
+        ease: "none",
+      });
+
+      // Refresh ScrollTrigger once images/fonts settle
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+
+      return () => {
+        clearTimeout(timer);
+        tl.kill();
+        ScrollTrigger.getById("work-pin")?.kill();
+      };
     },
-  });
+    { scope: sectionRef }
+  );
 
-  timeline.to(".work-flex", {
-    x: -translateX,
-    ease: "none",
-  });
-
-  // Clean up (optional, good practice)
-  return () => {
-    timeline.kill();
-    ScrollTrigger.getById("work")?.kill();
-  };
-}, []);
   return (
-    <div className="work-section" id="work">
+    <div className="work-section" id="work" ref={sectionRef}>
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>
         </h2>
-        <div className="work-flex">
+        <div className="work-flex" ref={flexRef}>
           {[
             {
               title: "Event & Stage Experience Branding",

@@ -10,24 +10,12 @@ import {
   CylinderCollider,
   RapierRigidBody,
 } from "@react-three/rapier";
+import { createDesignTextures } from "./utils/designTextures";
 
-const textureLoader = new THREE.TextureLoader();
-const imageUrls = [
-  "/images/react2.webp",
-  "/images/next2.webp",
-  "/images/node2.webp",
-  "/images/express.webp",
-  "/images/mongo.webp",
-  "/images/mysql.webp",
-  "/images/typescript.webp",
-  "/images/javascript.webp",
-];
-const textures = imageUrls.map((url) => textureLoader.load(url));
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
-
-const spheres = [...Array(30)].map(() => ({
-  scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+const spheres = [...Array(28)].map(() => ({
+  scale: [0.75, 0.95, 0.85, 1.05, 1.15][Math.floor(Math.random() * 5)],
 }));
 
 type SphereProps = {
@@ -48,28 +36,28 @@ function SphereGeo({
   const api = useRef<RapierRigidBody | null>(null);
 
   useFrame((_state, delta) => {
-    if (!isActive) return;
-    delta = Math.min(0.1, delta);
+    if (!isActive || !api.current) return;
+    delta = Math.min(0.05, delta);
     const impulse = vec
-      .copy(api.current!.translation())
+      .copy(api.current.translation())
       .normalize()
       .multiply(
         new THREE.Vector3(
-          -50 * delta * scale,
-          -150 * delta * scale,
-          -50 * delta * scale
+          -45 * delta * scale,
+          -130 * delta * scale,
+          -45 * delta * scale
         )
       );
 
-    api.current?.applyImpulse(impulse, true);
+    api.current.applyImpulse(impulse, true);
   });
 
   return (
     <RigidBody
-      linearDamping={0.75}
-      angularDamping={0.15}
-      friction={0.2}
-      position={[r(20), r(20) - 25, r(20) - 10]}
+      linearDamping={0.85}
+      angularDamping={0.25}
+      friction={0.3}
+      position={[r(18), r(15) - 18, r(16) - 8]}
       ref={api}
       colliders={false}
     >
@@ -85,7 +73,7 @@ function SphereGeo({
         scale={scale}
         geometry={sphereGeometry}
         material={material}
-        rotation={[0.3, 1, 1]}
+        rotation={[0.2, 0.8, 0.5]}
       />
     </RigidBody>
   );
@@ -100,7 +88,7 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
   const ref = useRef<RapierRigidBody>(null);
 
   useFrame(({ pointer, viewport }) => {
-    if (!isActive) return;
+    if (!isActive || !ref.current) return;
     const targetVec = vec.lerp(
       new THREE.Vector3(
         (pointer.x * viewport.width) / 2,
@@ -109,7 +97,7 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
       ),
       0.2
     );
-    ref.current?.setNextKinematicTranslation(targetVec);
+    ref.current.setNextKinematicTranslation(targetVec);
   });
 
   return (
@@ -119,7 +107,7 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
       colliders={false}
       ref={ref}
     >
-      <BallCollider args={[2]} />
+      <BallCollider args={[2.2]} />
     </RigidBody>
   );
 }
@@ -129,82 +117,76 @@ const TechStack = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
+      const elem = document.querySelector(".techstack");
+      if (!elem) return;
+      const rect = elem.getBoundingClientRect();
+      setIsActive(rect.top < window.innerHeight && rect.bottom > 0);
     };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
-    });
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const materials = useMemo(() => {
+    const textures = createDesignTextures();
     return textures.map(
       (texture) =>
         new THREE.MeshPhysicalMaterial({
           map: texture,
           emissive: "#ffffff",
           emissiveMap: texture,
-          emissiveIntensity: 0.3,
-          metalness: 0.5,
-          roughness: 1,
-          clearcoat: 0.1,
+          emissiveIntensity: 0.12,
+          metalness: 0.18,
+          roughness: 0.28,
+          clearcoat: 0.7,
+          clearcoatRoughness: 0.12,
         })
     );
   }, []);
 
   return (
-    <div className="techstack">
-      <h2> Design & Motion Tools</h2>
+    <div className="techstack" id="tools">
+      <h2>Creative & Motion Stack</h2>
 
       <Canvas
         shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+        gl={{ alpha: true, stencil: false, depth: true, antialias: true }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
-        onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
+        onCreated={(state) => (state.gl.toneMappingExposure = 1.35)}
         className="tech-canvas"
       >
-        <ambientLight intensity={1} />
+        <ambientLight intensity={1.2} />
         <spotLight
           position={[20, 20, 25]}
           penumbra={1}
-          angle={0.2}
-          color="white"
+          angle={0.25}
+          color="#ffffff"
           castShadow
           shadow-mapSize={[512, 512]}
         />
-        <directionalLight position={[0, 5, -4]} intensity={2} />
+        <directionalLight position={[-12, 15, 10]} intensity={1.6} color="#ff2a51" />
+        <directionalLight position={[10, -10, 5]} intensity={0.9} color="#ffffff" />
         <Physics gravity={[0, 0, 0]}>
           <Pointer isActive={isActive} />
           {spheres.map((props, i) => (
             <SphereGeo
               key={i}
               {...props}
-              material={materials[Math.floor(Math.random() * materials.length)]}
+              material={materials[i % materials.length]}
               isActive={isActive}
             />
           ))}
         </Physics>
         <Environment
           files="/models/char_enviorment.hdr"
-          environmentIntensity={0.5}
+          environmentIntensity={0.6}
           environmentRotation={[0, 4, 2]}
         />
         <EffectComposer enableNormalPass={false}>
-          <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
+          <N8AO color="#060506" aoRadius={2} intensity={1.2} />
         </EffectComposer>
       </Canvas>
     </div>

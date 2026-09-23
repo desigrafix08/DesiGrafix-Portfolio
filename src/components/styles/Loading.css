@@ -2,8 +2,7 @@
   position: fixed;
   width: 100vw;
   height: var(--vh);
-  /* background-image: linear-gradient(#cbb1ff, #d8c4ff); */
-  background-color: #eae5ec;
+  background-color: #0a0000;
   z-index: 999999999;
   display: flex;
   place-items: center;
@@ -70,7 +69,7 @@
   overflow: visible;
 }
 .loading-hover {
-  background-color: #a87cff;
+  background-color: #ff1e42;
   width: 250px;
   height: 120px;
   position: absolute;
@@ -194,9 +193,12 @@
   color: var(--backgroundColor);
 }
 .loader-title {
-  font-weight: 700;
+  font-family: "Syne", sans-serif;
+  font-weight: 800;
   font-size: 14px;
-  letter-spacing: 0.2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accentColor);
 }
 @keyframes blink {
   0% {
@@ -283,10 +285,12 @@
   left: 0;
   width: 100%;
   transform: translateY(-50%);
-  color: var(--backgroundColor);
+  color: var(--accentColor);
+  font-family: "Syne", sans-serif;
   font-size: 60px;
-  font-weight: 600;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: -1px;
 }
 .loading-marquee span {
   padding: 0px 50px;
@@ -296,7 +300,7 @@
   content: "";
   width: 20px;
   height: 20px;
-  background-color: var(--backgroundColor);
+  background-color: var(--accentColor);
   position: absolute;
   top: 50%;
   border-radius: 50px;
