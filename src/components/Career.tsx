@@ -15,44 +15,67 @@ const Career = () => {
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>Bachelor of Fine Arts (BFA)</h4>
+                <h5>Lovely Professional University</h5>
               </div>
-              <h3>20XX</h3>
+              <h3>2022 - 2026</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Focused on Visual Communication, Fine Arts, and Digital Media.
+              Multiple-time Gold Medalist in AIU National & State Level Poster Making & Fine Arts Festivals.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>Graphic Designer Intern</h4>
+                <h5>Mindcraft Events</h5>
               </div>
-              <h3>20XX</h3>
+              <h3>JUN 2025</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Assisted in event branding and marketing collateral design.
+              Prepared production-ready artwork and visual assets for large-scale corporate and social events.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>Graphic & Motion Designer</h4>
+                <h5>Mindcraft Events</h5>
               </div>
               <h3>NOW</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Designing end-to-end event and exhibition branding (stage backdrops, LED screens, standees, brochures).
+              Creating high-impact social media posts, motion graphics, and promotional videos from concept to final delivery.
             </p>
+          </div>
+        </div>
+
+        <div className="career-achievements">
+          <h3 className="achievements-title">Honors & Achievements</h3>
+          <div className="achievements-grid">
+            <div className="achievement-card">
+              <span className="achievement-badge">🏆 GOLD MEDAL</span>
+              <h4>AIU National Youth Festival</h4>
+              <p>Poster Making (National Level) • 2025</p>
+            </div>
+            <div className="achievement-card">
+              <span className="achievement-badge">🏆 GOLD MEDAL</span>
+              <h4>AIU North Zone Youth Festival</h4>
+              <p>Poster Making (Zonal Level) • 2025</p>
+            </div>
+            <div className="achievement-card">
+              <span className="achievement-badge">🏆 GOLD MEDAL</span>
+              <h4>Punjab State Youth Festival</h4>
+              <p>Still Life Fine Arts • 2025</p>
+            </div>
+            <div className="achievement-card">
+              <span className="achievement-badge">⭐ 3× GOLD & 1× SILVER</span>
+              <h4>Spectra Youth Festival</h4>
+              <p>Poster Making, Spot Painting, Cartooning & Collage • 2024</p>
+            </div>
           </div>
         </div>
       </div>
